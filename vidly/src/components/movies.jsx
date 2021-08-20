@@ -1,10 +1,8 @@
 import React, { Component } from "react";
 import { getMovies } from "../services/movieList";
-//import { genres, getGenres } from "../services/genreList";
 import Like from "./like";
 import Pagination from "./../common/pagination";
 import { paginate } from "./../utils/paginate";
-//import ListGroup from "../common/listGroup";
 
 class Movies extends Component {
   state = {
