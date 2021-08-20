@@ -2,20 +2,22 @@ import React, { Component } from "react";
 
 class ListGroup extends Component {
   render() {
-    const genreListClone = [
-      { _id: 1, name: "All genre" },
-      ...this.props.genres,
-    ];
+    const { items, valueProperty, textProperty, onItemSelect, selectedItem } =
+      this.props;
     return (
       <>
         <ul class="list-group">
-          {genreListClone.map((i) => (
-            <li 
-            key={i._id} 
-            class="list-group-item"
-            onClick={()=>this.props.onPress(i._id)}
+          {items.map((item) => (
+            <li
+              onClick={() => onItemSelect(item)}
+              key={item[valueProperty]}
+              className={
+                item === selectedItem
+                  ? "list-group-item active"
+                  : "list-group-item "
+              }
             >
-              {i.name}
+              {item[textProperty]}
             </li>
           ))}
         </ul>
