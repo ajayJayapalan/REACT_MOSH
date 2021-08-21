@@ -6,6 +6,7 @@ import { paginate } from "./../utils/paginate";
 import ListGroup from "../common/listGroup";
 import MoviesTable from "./moviesTable";
 import _ from "lodash";
+import { Link } from 'react-router-dom';
 
 class Movies extends Component {
   state = {
@@ -46,9 +47,7 @@ class Movies extends Component {
     this.setState({ sortColumn });
   };
 
-  handleRoute = () => {
-    this.props.history.push("/movies/new")
-  }
+
 
   getPageData = () => {
     const {
@@ -91,7 +90,7 @@ class Movies extends Component {
             />
           </div>
           <div className="col">
-          <button onClick={this.handleRoute} className="btn btn-primary">New Movie</button>
+          <Link to="/movies/new" className="btn btn-primary">New Movie</Link>
             <p className="my-4">Showing {totalCount} movies in the database</p>
             <MoviesTable
               sortColumn={this.state.sortColumn}

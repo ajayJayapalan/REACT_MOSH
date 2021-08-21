@@ -1,4 +1,4 @@
-
+import * as genresAPI from "./genreList"
 
 const movies = [
   {
@@ -8,7 +8,7 @@ const movies = [
     numberInStock: 8,
     dailyRentalRate: "5.0",
     publishDate: "2021-08-19T15:15:03.163Z",
-    liked: true
+    liked: true,
   },
   {
     _id: "611e75778b8b0b0f789396be",
@@ -92,10 +92,25 @@ const movies = [
   },
 ];
 
-export function getMovies(){
-    return movies;
+export function getMovies() {
+  return movies;
 }
 
-export function getMovieById(id){
-    return movies.find(m=> m._id === id);
+export function getMovieById(id) {
+  return movies.find((m) => m._id === id);
+}
+
+export function saveMovie(movie) {
+  let movieInDb = movies.find((m) => m._id === movie._id) || {};
+  movieInDb.title = movie.title;
+  movieInDb.genre = genresAPI.genres.find((g) => g._id === movie.genreId);
+  movieInDb.numberInStock = movie.numberInStock;
+  movieInDb.dailyRentalRate = movie.dailyRentalRate;
+
+  if (!movieInDb._id) {
+    movieInDb._id = Date.now().toString();
+    movies.push(movieInDb);
+  }
+
+  return movieInDb;
 }
