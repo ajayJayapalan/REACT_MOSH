@@ -46,6 +46,10 @@ class Movies extends Component {
     this.setState({ sortColumn });
   };
 
+  handleRoute = () => {
+    this.props.history.push("/movies/new")
+  }
+
   getPageData = () => {
     const {
       currentPage,
@@ -87,6 +91,7 @@ class Movies extends Component {
             />
           </div>
           <div className="col">
+          <button onClick={this.handleRoute} className="btn btn-primary">New Movie</button>
             <p className="my-4">Showing {totalCount} movies in the database</p>
             <MoviesTable
               sortColumn={this.state.sortColumn}
