@@ -98,8 +98,8 @@ class Movies extends Component {
     const { totalCount, data } = this.getPageData();
     const { user } = this.props;
 
-    if (this.state.movies.length === 0)
-      return <p className="my-4">There are no movies in the database</p>;
+    // if (this.state.movies.length === 0)
+    //   return <p className="my-4">There are no movies in the database</p>;
 
     return (
       <>
