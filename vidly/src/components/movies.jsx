@@ -1,6 +1,7 @@
 import React, { Component } from "react";
-import { getMovies } from "../services/movieList";
-import { getGenres } from "../services/genreList";
+import { getMovies, deleteMovie } from "../services/movieService";
+import { getGenres } from "../services/genreService";
+import { toast } from "react-toastify";
 import Pagination from "./../common/pagination";
 import { paginate } from "./../utils/paginate";
 import ListGroup from "../common/listGroup";
@@ -20,9 +21,12 @@ class Movies extends Component {
     sortColumn: { path: "title", order: "asc" },
   };
 
-  componentDidMount() {
-    const genres = [{ _id: "", name: "All Genres" }, ...getGenres()];
-    this.setState({ movies: getMovies(), genres: genres });
+  async componentDidMount() {
+    const { data } = await getGenres();
+    const genres = [{ _id: "", name: "All Genres" }, ...data];
+
+    const { data: movies } = await getMovies();
+    this.setState({ movies, genres: genres });
   }
 
   handleLike = (item) => {
@@ -32,9 +36,20 @@ class Movies extends Component {
     this.setState({ movies: [...movies] });
   };
 
-  handleDelete = (id) => {
-    const moviesClone = this.state.movies.filter((i) => i._id !== id);
-    this.setState({ movies: moviesClone });
+  handleDelete = async (id) => {
+    const originalMovies = this.state.movies;
+    const movies = originalMovies.filter((i) => i._id !== id);
+    this.setState({ movies });
+
+    try {
+      await deleteMovie(id);
+    } catch (error) {
+      if (error.response && error.response.status === 404) {
+        toast.error("This movie has already been deleted.");
+      }
+
+      this.setState({ movies: originalMovies });
+    }
   };
 
   handlePageChange = (page) => {
@@ -80,11 +95,10 @@ class Movies extends Component {
 
   render() {
     const { currentPage, pageSize, searchQuery } = this.state;
+    const { totalCount, data } = this.getPageData();
 
     if (this.state.movies.length === 0)
       return <p className="my-4">There are no movies in the database</p>;
-
-    const { totalCount, data } = this.getPageData();
 
     return (
       <>
